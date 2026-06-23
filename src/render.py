@@ -9,6 +9,7 @@ Runs standalone:  python src/render.py
 Optionally point at samples:  python src/render.py --data data/data.json --model data/model.json
 """
 import os, json, math, argparse, datetime
+from zoneinfo import ZoneInfo
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -55,11 +56,14 @@ def arc(score):
 
 # ---------- merge ----------
 def build_context(data, model):
-    now = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=3)))  # TRT
-    date_long = now.strftime("%B %-d, %Y")
-    date_short = now.strftime("%b %-d")
-    weekday = now.strftime("%A")
-    time_label = now.strftime("%H:%M") + " TRT"
+    # Trading day = U.S. Eastern (the session the report is "based on the close" of).
+    # Clock shown to the reader = Malta local time (CET/CEST auto via tzdata).
+    et = datetime.datetime.now(ZoneInfo("America/New_York"))
+    mt = datetime.datetime.now(ZoneInfo("Europe/Malta"))
+    date_long = et.strftime("%B %-d, %Y")
+    date_short = et.strftime("%b %-d")
+    weekday = et.strftime("%A")
+    time_label = mt.strftime("%H:%M ") + mt.tzname()   # e.g. "23:00 CEST"
 
     # --- health score: weighted from components (auditable) ---
     comps = model["health"]["components"]
@@ -131,9 +135,9 @@ def build_context(data, model):
         "brand": BRAND, "tagline": TAGLINE,
         "date_long": date_long, "date_short": date_short,
         "weekday": weekday, "time_label": time_label,
-        "basis": f"based on the {date_long} close",
+        "basis": f"based on the {date_long} U.S. close",
         "data_sources": "FMP (live) · Claude (synthesis)",
-        "generated_at": now.strftime("%Y-%m-%d %H:%M TRT"),
+        "generated_at": mt.strftime("%Y-%m-%d %H:%M ") + mt.tzname(),
         "intro": model["intro"],
         "health": {
             "score": score, "label": h.get("label", ""),
