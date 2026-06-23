@@ -5,7 +5,7 @@ value-chain health, positioning, news framing, thesis verdicts, trade ideas,
 self-audit, and glossary additions.
 
 Design rule: Claude provides JUDGMENT (scores 0-100, verdicts, prose).
-It must NOT invent prices/percentages — those are rendered from data.json by
+It must NOT invent prices/percentages -- those are rendered from data.json by
 render.py. This keeps every number auditable.
 
 Env:
@@ -20,6 +20,7 @@ MODEL = os.environ.get("AIPULSE_MODEL", "claude-haiku-4-5")
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "data", "data.json")
 OUT = os.path.join(HERE, "..", "data", "model.json")
+RAW = os.path.join(HERE, "..", "data", "model_raw.txt")
 
 SCHEMA = """Return ONLY a JSON object (no markdown, no prose outside JSON) with EXACTLY these keys:
 {
@@ -49,19 +50,67 @@ SCHEMA = """Return ONLY a JSON object (no markdown, no prose outside JSON) with 
   },
   "trade_ideas": [ {"title":"<short>","rationale":"<1-2 sentences>"}, ... 2-3 items ],
   "self_audit": [ "<assumption/risk/limitation>", ... 2-4 bullets ],
-  "glossary": [ {"k":"<TERM or TICKER>","t":"<title>","d":"<plain-English 1 sentence>"}, ... 6-12 items for jargon you used ]
+  "glossary": [ {"k":"<TERM or TICKER>","t":"<title>","d":"<plain-English 1 sentence>"}, ... 5-8 items for jargon you used ]
 }
-Scores: 0-40 weak, 41-60 mixed, 61-80 strong, 81-100 very strong. Weights are fixed as given. Be specific and sober; this is a personal decision aid, not hype."""
+Scores: 0-40 weak, 41-60 mixed, 61-80 strong, 81-100 very strong. Weights are fixed as given.
+Keep every note short. Be specific and sober; this is a personal decision aid, not hype.
+Output compact JSON and ensure it is COMPLETE and valid (no trailing commas, no truncation)."""
 
 
-def strip_json(txt):
+def _salvage_truncated(s):
+    """If the model output was cut off, close the open brackets and retry.
+    Walks the text tracking string/bracket state, then scans backward for a
+    clean value-ending cut point and appends the missing closers."""
+    stack, instr, esc, snap = [], False, False, []
+    for ch in s:
+        if instr:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                instr = False
+        else:
+            if ch == '"':
+                instr = True
+            elif ch in "{[":
+                stack.append("}" if ch == "{" else "]")
+            elif ch in "}]" and stack:
+                stack.pop()
+        snap.append((instr, tuple(stack)))
+    for i in range(len(s) - 1, -1, -1):
+        in_s, stk = snap[i]
+        if in_s:
+            continue
+        ch = s[i]
+        if ch in '}]"' or ch.isdigit() or ch in "el":  # value enders incl. true/false/null
+            cand = re.sub(r",\s*$", "", s[:i + 1]) + "".join(reversed(stk))
+            try:
+                return json.loads(cand)
+            except Exception:
+                continue
+    return None
+
+
+def extract_json(txt):
+    """Best-effort: strip fences, isolate the outer object, repair common issues."""
     txt = txt.strip()
     if txt.startswith("```"):
         txt = re.sub(r"^```[a-zA-Z]*\n?", "", txt)
         txt = re.sub(r"\n?```$", "", txt)
-    # grab outermost { ... }
-    a, b = txt.find("{"), txt.rfind("}")
-    return txt[a:b + 1] if a >= 0 and b > a else txt
+    a = txt.find("{")
+    if a < 0:
+        return txt
+    txt = txt[a:]
+    for c in (txt, re.sub(r",(\s*[}\]])", r"\1", txt)):
+        try:
+            return json.loads(c)
+        except Exception:
+            pass
+    salv = _salvage_truncated(txt)
+    if salv is not None:
+        return salv
+    raise ValueError("could not parse/repair model JSON")
 
 
 def main():
@@ -70,7 +119,6 @@ def main():
         sys.exit(1)
     data = json.load(open(DATA))
 
-    # compact the data so the prompt stays small
     compact = {
         "stocks": {t: {k: v.get(k) for k in ("price", "chg_1d", "chg_1w", "above_50d", "pe")}
                    for t, v in data["stocks"].items()},
@@ -84,9 +132,10 @@ def main():
     client = anthropic.Anthropic()
     msg = client.messages.create(
         model=MODEL,
-        max_tokens=4000,
+        max_tokens=8000,
         system="You are an AI-equity market analyst producing a structured daily report model. "
-               "You output strict JSON only. You never fabricate prices or percentages; "
+               "You output strict, COMPLETE JSON only -- never truncated, no markdown fences, "
+               "no prose outside the JSON object. You never fabricate prices or percentages; "
                "you judge, score, and explain using the data provided.",
         messages=[{
             "role": "user",
@@ -94,9 +143,22 @@ def main():
         }],
     )
     raw = "".join(b.text for b in msg.content if b.type == "text")
-    model = json.loads(strip_json(raw))
+    try:
+        os.makedirs(os.path.dirname(RAW), exist_ok=True)
+        open(RAW, "w", encoding="utf-8").write(raw)
+    except Exception:
+        pass
+
+    try:
+        model = extract_json(raw)
+    except Exception as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        print(f"stop_reason={getattr(msg,'stop_reason',None)} raw_len={len(raw)}", file=sys.stderr)
+        print("--- raw tail ---\n" + raw[-600:], file=sys.stderr)
+        sys.exit(1)
+
     json.dump(model, open(OUT, "w"), indent=2)
-    print(f"Wrote {OUT} (model: {MODEL})")
+    print(f"Wrote {OUT} (model: {MODEL}, stop_reason={getattr(msg,'stop_reason',None)})")
 
 
 if __name__ == "__main__":
