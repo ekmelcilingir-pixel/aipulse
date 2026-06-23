@@ -1,0 +1,15 @@
+{
+  "_comment": "EDIT THIS with your real positions. lots = share count (or contract count). cost = average cost basis per share in USD. These numbers drive Panel 08 (Thesis Check). Placeholders below — replace before first real run.",
+  "positions": [
+    { "ticker": "NVDA", "lots": 100, "cost": 120.0 },
+    { "ticker": "AVGO", "lots": 40,  "cost": 165.0 },
+    { "ticker": "AMD",  "lots": 80,  "cost": 140.0 },
+    { "ticker": "MRVL", "lots": 150, "cost": 70.0  },
+    { "ticker": "MU",   "lots": 90,  "cost": 95.0  },
+    { "ticker": "TSM",  "lots": 60,  "cost": 175.0 },
+    { "ticker": "ARM",  "lots": 50,  "cost": 130.0 },
+    { "ticker": "ASML", "lots": 15,  "cost": 900.0 },
+    { "ticker": "TSLA", "lots": 70,  "cost": 240.0 },
+    { "ticker": "RKLB", "lots": 300, "cost": 12.0  }
+  ]
+}

@@ -1,0 +1,319 @@
+{
+  "as_of": "2026-06-24T17:15:00Z",
+  "stocks": {
+    "NVDA": {
+      "price": 141.2,
+      "chg_1d": -2.1,
+      "chg_1w": 3.4,
+      "sma50": 134.14,
+      "above_50d": true,
+      "pe": 38.5,
+      "eps": 3.6675324675324674
+    },
+    "AVGO": {
+      "price": 178.9,
+      "chg_1d": -1.4,
+      "chg_1w": 1.2,
+      "sma50": 169.95499999999998,
+      "above_50d": true,
+      "pe": 42.1,
+      "eps": 4.249406175771972
+    },
+    "AMD": {
+      "price": 151.3,
+      "chg_1d": -3.2,
+      "chg_1w": -1.1,
+      "sma50": 143.735,
+      "above_50d": false,
+      "pe": 44.0,
+      "eps": 3.438636363636364
+    },
+    "MRVL": {
+      "price": 74.8,
+      "chg_1d": -8.6,
+      "chg_1w": -6.2,
+      "sma50": 71.05999999999999,
+      "above_50d": false,
+      "pe": 29.3,
+      "eps": 2.5529010238907848
+    },
+    "MU": {
+      "price": 98.4,
+      "chg_1d": -10.8,
+      "chg_1w": -7.9,
+      "sma50": 93.48,
+      "above_50d": false,
+      "pe": 12.4,
+      "eps": 7.935483870967742
+    },
+    "TSM": {
+      "price": 182.5,
+      "chg_1d": -1.9,
+      "chg_1w": 2.1,
+      "sma50": 173.375,
+      "above_50d": true,
+      "pe": 26.7,
+      "eps": 6.835205992509364
+    },
+    "ARM": {
+      "price": 138.0,
+      "chg_1d": -8.7,
+      "chg_1w": -5.5,
+      "sma50": 131.1,
+      "above_50d": false,
+      "pe": 71.2,
+      "eps": 1.9382022471910112
+    },
+    "ASML": {
+      "price": 905.0,
+      "chg_1d": -7.6,
+      "chg_1w": -4.1,
+      "sma50": 859.75,
+      "above_50d": false,
+      "pe": 33.8,
+      "eps": 26.775147928994084
+    },
+    "TSLA": {
+      "price": 248.0,
+      "chg_1d": -0.9,
+      "chg_1w": 2.2,
+      "sma50": 235.6,
+      "above_50d": true,
+      "pe": 61.0,
+      "eps": 4.065573770491803
+    },
+    "RKLB": {
+      "price": 14.7,
+      "chg_1d": 1.2,
+      "chg_1w": 8.9,
+      "sma50": 13.964999999999998,
+      "above_50d": true,
+      "pe": null,
+      "eps": null
+    },
+    "ANET": {
+      "price": 96.0,
+      "chg_1d": -2.0,
+      "chg_1w": 0.5,
+      "sma50": 91.19999999999999,
+      "above_50d": true,
+      "pe": 35.0,
+      "eps": 2.742857142857143
+    },
+    "MSFT": {
+      "price": 402.0,
+      "chg_1d": -1.1,
+      "chg_1w": -0.8,
+      "sma50": 381.9,
+      "above_50d": false,
+      "pe": 31.0,
+      "eps": 12.96774193548387
+    },
+    "GOOGL": {
+      "price": 168.0,
+      "chg_1d": -0.7,
+      "chg_1w": -0.5,
+      "sma50": 159.6,
+      "above_50d": false,
+      "pe": 22.0,
+      "eps": 7.636363636363637
+    },
+    "AMZN": {
+      "price": 181.0,
+      "chg_1d": -0.9,
+      "chg_1w": -1.2,
+      "sma50": 171.95,
+      "above_50d": false,
+      "pe": 38.0,
+      "eps": 4.7631578947368425
+    },
+    "META": {
+      "price": 498.0,
+      "chg_1d": -1.3,
+      "chg_1w": -2.0,
+      "sma50": 473.09999999999997,
+      "above_50d": false,
+      "pe": 24.0,
+      "eps": 20.75
+    },
+    "CRM": {
+      "price": 255.0,
+      "chg_1d": -1.0,
+      "chg_1w": -0.3,
+      "sma50": 242.25,
+      "above_50d": true,
+      "pe": 40.0,
+      "eps": 6.375
+    },
+    "NOW": {
+      "price": 820.0,
+      "chg_1d": -0.6,
+      "chg_1w": 1.1,
+      "sma50": 779.0,
+      "above_50d": true,
+      "pe": 58.0,
+      "eps": 14.137931034482758
+    },
+    "PLTR": {
+      "price": 28.5,
+      "chg_1d": -2.4,
+      "chg_1w": 4.0,
+      "sma50": 27.075,
+      "above_50d": true,
+      "pe": 70.0,
+      "eps": 0.40714285714285714
+    }
+  },
+  "indices": [
+    {
+      "ticker": "SMH",
+      "name": "SMH (Semis)",
+      "chg_1d": -6.2,
+      "chg_1w": -4.8
+    },
+    {
+      "ticker": "SOXX",
+      "name": "SOXX (Semis)",
+      "chg_1d": -5.9,
+      "chg_1w": -4.4
+    },
+    {
+      "ticker": "QQQ",
+      "name": "QQQ (Nasdaq-100)",
+      "chg_1d": -1.6,
+      "chg_1w": -0.9
+    },
+    {
+      "ticker": "SPY",
+      "name": "SPY (S&P 500)",
+      "chg_1d": -0.9,
+      "chg_1w": 0.2
+    },
+    {
+      "ticker": "IGV",
+      "name": "IGV (Software)",
+      "chg_1d": -1.2,
+      "chg_1w": -1.8
+    }
+  ],
+  "value_chain": [
+    {
+      "layer": "Foundry / Manufacturing",
+      "tickers": [
+        "TSM",
+        "ASML"
+      ]
+    },
+    {
+      "layer": "GPU / Accelerators",
+      "tickers": [
+        "NVDA",
+        "AMD"
+      ]
+    },
+    {
+      "layer": "Memory / HBM",
+      "tickers": [
+        "MU"
+      ]
+    },
+    {
+      "layer": "Networking / Interconnect",
+      "tickers": [
+        "AVGO",
+        "MRVL",
+        "ANET"
+      ]
+    },
+    {
+      "layer": "IP / Design",
+      "tickers": [
+        "ARM"
+      ]
+    },
+    {
+      "layer": "Hyperscalers / Cloud",
+      "tickers": [
+        "MSFT",
+        "GOOGL",
+        "AMZN",
+        "META"
+      ]
+    },
+    {
+      "layer": "Software / Application",
+      "tickers": [
+        "CRM",
+        "NOW",
+        "PLTR"
+      ]
+    }
+  ],
+  "hyperscaler_capex_yoy": 64.6,
+  "news": [
+    {
+      "title": "Memory names tumble as Samsung/SK Hynix leverage unwinds",
+      "site": "reuters.com",
+      "url": "#",
+      "date": "2026-06-24"
+    },
+    {
+      "title": "GPU cloud $/hr ticks higher on supply tightness",
+      "site": "bloomberg.com",
+      "url": "#",
+      "date": "2026-06-24"
+    }
+  ],
+  "portfolio": [
+    {
+      "ticker": "NVDA",
+      "lots": 100,
+      "cost": 120.0
+    },
+    {
+      "ticker": "AVGO",
+      "lots": 40,
+      "cost": 165.0
+    },
+    {
+      "ticker": "AMD",
+      "lots": 80,
+      "cost": 140.0
+    },
+    {
+      "ticker": "MRVL",
+      "lots": 150,
+      "cost": 70.0
+    },
+    {
+      "ticker": "MU",
+      "lots": 90,
+      "cost": 95.0
+    },
+    {
+      "ticker": "TSM",
+      "lots": 60,
+      "cost": 175.0
+    },
+    {
+      "ticker": "ARM",
+      "lots": 50,
+      "cost": 130.0
+    },
+    {
+      "ticker": "ASML",
+      "lots": 15,
+      "cost": 900.0
+    },
+    {
+      "ticker": "TSLA",
+      "lots": 70,
+      "cost": 240.0
+    },
+    {
+      "ticker": "RKLB",
+      "lots": 300,
+      "cost": 12.0
+    }
+  ]
+}

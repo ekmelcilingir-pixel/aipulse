@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=1400, user-scalable=yes">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AiPulse · June 23, 2026 · Tuesday</title>
+<style>
+:root{
+  --bg:#0b0e13; --panel:#11151c; --panel2:#161b24; --bd:#262b36;
+  --text:#e8ecf4; --muted:#8b94a8; --dim:#5d6577;
+  --purple:#a855f7; --purple-text:#c89bf5; --purple-bd:rgba(168,85,247,0.32);
+  --green:#22c55e; --green-text:#86efac; --green-bd:rgba(34,197,94,0.32);
+  --amber:#f59e0b; --amber-text:#fcd34d; --amber-bd:rgba(245,158,11,0.32);
+  --red:#ef4444; --red-text:#fca5a5; --red-bd:rgba(239,68,68,0.32);
+  --blue:#3b82f6; --blue-text:#93c5fd; --blue-bd:rgba(59,130,246,0.32);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,Helvetica,sans-serif;font-size:14.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body{padding-top:60px}
+
+/* FAB BAR */
+.fab-bar{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;gap:8px;padding:10px 16px;background:rgba(11,14,19,0.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.fab-bar.hidden{display:none}
+.fab-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;background:var(--panel2);border:1px solid var(--bd);color:var(--text);cursor:pointer;font-size:13px;font-weight:500;transition:all .15s}
+.fab-btn:hover{border-color:var(--purple);color:var(--purple-text)}
+.fab-btn.primary{background:linear-gradient(135deg,#9333ea,#a855f7);border-color:var(--purple);color:#fff}
+.fab-btn.primary:hover{background:linear-gradient(135deg,#a855f7,#c084fc);color:#fff}
+.fab-btn.close{background:transparent}
+.fab-toast{position:fixed;top:70px;right:16px;z-index:10000;padding:10px 16px;background:var(--green);color:#0b0e13;border-radius:8px;font-weight:600;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none}
+.fab-toast.show{opacity:1}
+@media print{.fab-bar,.fab-toast{display:none!important}body{padding-top:0!important}}
+@media(max-width:768px){.fab-btn{padding:6px 10px;font-size:12px}}
+
+/* LAYOUT */
+.wrap{max-width:1200px;margin:0 auto;padding:24px 20px 80px}
+.header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;gap:18px;flex-wrap:wrap;border-bottom:1px solid var(--bd);padding-bottom:18px}
+.header h1{font-size:28px;font-weight:700;letter-spacing:-.4px}
+.header h1 .ico{color:var(--purple);margin-right:4px}
+.header .meta{text-align:right;font-size:12.5px;color:var(--muted);line-height:1.7}
+.header .meta .basis{color:var(--purple-text);font-weight:600}
+
+.intro{background:linear-gradient(135deg,rgba(168,85,247,0.10),rgba(168,85,247,0.03));border:1px solid var(--purple-bd);border-left:3px solid var(--purple);border-radius:10px;padding:16px 20px;margin:18px 0 26px;font-size:14.5px;line-height:1.7}
+.intro b{color:var(--purple-text);font-weight:600}
+
+/* BLOCK */
+.block{background:var(--panel);border:1px solid var(--bd);border-radius:12px;padding:18px 22px;margin-bottom:18px}
+.block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--bd);padding-bottom:10px}
+.block-head .ttl{font-size:16px;font-weight:700;letter-spacing:.2px;display:flex;align-items:center;gap:8px}
+.block-head .ttl .num{color:var(--purple);font-weight:700}
+.block-head .when{font-size:11.5px;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:6px;font-size:11.5px;font-weight:600;background:var(--panel2);border:1px solid var(--bd);color:var(--muted)}
+.chip.green{background:rgba(34,197,94,0.12);border-color:var(--green-bd);color:var(--green-text)}
+.chip.amber{background:rgba(245,158,11,0.12);border-color:var(--amber-bd);color:var(--amber-text)}
+.chip.red{background:rgba(239,68,68,0.12);border-color:var(--red-bd);color:var(--red-text)}
+.chip.purple{background:rgba(168,85,247,0.14);border-color:var(--purple-bd);color:var(--purple-text)}
+.chip.blue{background:rgba(59,130,246,0.12);border-color:var(--blue-bd);color:var(--blue-text)}
+
+.yani-banner{background:linear-gradient(90deg,rgba(168,85,247,0.18),rgba(168,85,247,0.05));border:1px solid var(--purple-bd);border-left:3px solid var(--purple);border-radius:8px;padding:10px 14px;margin-top:12px;font-size:13.5px;line-height:1.65}
+.yani-banner b{color:var(--purple-text)}
+
+.stamp{font-size:10.5px;color:var(--dim);margin-top:4px;font-variant-numeric:tabular-nums}
+
+/* GAUGE */
+.gauge-wrap{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:center}
+@media(max-width:680px){.gauge-wrap{grid-template-columns:1fr}}
+.gauge{position:relative;width:220px;height:140px;margin:0 auto}
+.gauge svg{width:100%;height:auto}
+.gauge .score-text{position:absolute;top:60%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.gauge .score-num{font-size:38px;font-weight:800;color:var(--text)}
+.gauge .score-lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar-row{display:grid;grid-template-columns:1fr 50px;gap:10px;align-items:center;font-size:12.5px}
+.bar-row .lbl{color:var(--muted);font-size:12px}
+.bar-row .lbl b{color:var(--text);font-weight:600}
+.bar-row .val{color:var(--text);font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.bar-track{grid-column:1/-1;height:6px;background:var(--panel2);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--purple),#c084fc);border-radius:3px;transition:width .3s}
+.bar-fill.green{background:linear-gradient(90deg,var(--green),#86efac)}
+.bar-fill.amber{background:linear-gradient(90deg,var(--amber),#fcd34d)}
+.bar-fill.red{background:linear-gradient(90deg,var(--red),#fca5a5)}
+.bar-row.bar-block{display:block}
+.bar-row.bar-block .top{display:flex;justify-content:space-between;margin-bottom:4px}
+
+/* MINI CARDS */
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:6px}
+.mini{background:var(--panel2);border:1px solid var(--bd);border-radius:8px;padding:12px}
+.mini.green{border-color:var(--green-bd)}
+.mini.amber{border-color:var(--amber-bd)}
+.mini.red{border-color:var(--red-bd)}
+.mini.purple{border-color:var(--purple-bd)}
+.mini .top{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.mini .val{font-size:22px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;line-height:1.15}
+.mini .val.pos{color:var(--green-text)}
+.mini .val.neg{color:var(--red-text)}
+.mini .sub{font-size:12px;color:var(--muted);margin-top:3px}
+.mini .sub.pos{color:var(--green-text)}
+.mini .sub.neg{color:var(--red-text)}
+
+/* STOCK GRID */
+.stock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.s-card{background:var(--panel2);border:1px solid var(--bd);border-radius:8px;padding:12px}
+.s-card .tk{font-size:14.5px;font-weight:700;color:var(--text);margin-bottom:2px}
+.s-card .px{font-size:13px;color:var(--muted);margin-bottom:6px;font-variant-numeric:tabular-nums}
+.s-card .rows{display:flex;flex-direction:column;gap:2px;font-size:11.5px}
+.s-card .rows .r{display:flex;justify-content:space-between;color:var(--muted)}
+.s-card .rows .r b{font-variant-numeric:tabular-nums}
+.s-card .pos{color:var(--green-text)}
+.s-card .neg{color:var(--red-text)}
+.s-card.leader{border-color:var(--green);box-shadow:0 0 0 1px var(--green-bd)}
+.s-card.laggard{border-color:var(--red-bd)}
+.s-card .badge-strip{margin-top:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+.s-card.leader .badge-strip{color:var(--green-text)}
+.s-card.laggard .badge-strip{color:var(--red-text)}
+
+/* LAYERS */
+.layers{display:flex;flex-direction:column;gap:6px}
+.layer{display:grid;grid-template-columns:14px 200px 1fr;gap:14px;align-items:center;padding:11px 14px;background:var(--panel2);border:1px solid var(--bd);border-radius:8px}
+@media(max-width:680px){.layer{grid-template-columns:14px 1fr;}.layer .read{grid-column:1/-1;padding-left:28px;font-size:12.5px}}
+.layer .dot{width:12px;height:12px;border-radius:50%;background:var(--muted)}
+.layer .dot.green{background:var(--green);box-shadow:0 0 8px rgba(34,197,94,0.5)}
+.layer .dot.amber{background:var(--amber);box-shadow:0 0 8px rgba(245,158,11,0.5)}
+.layer .dot.red{background:var(--red);box-shadow:0 0 8px rgba(239,68,68,0.5)}
+.layer .name{font-size:13.5px;font-weight:600}
+.layer .name .basket{color:var(--dim);font-size:11.5px;font-weight:400;display:block;margin-top:2px}
+.layer .read{font-size:13px;color:var(--muted);line-height:1.5}
+.layer .read b{color:var(--text);font-weight:600}
+
+/* THESIS CARDS */
+.thesis{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.tcard{background:var(--panel2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px}
+.tcard.green{border-color:var(--green-bd);background:rgba(34,197,94,0.04)}
+.tcard.amber{border-color:var(--amber-bd);background:rgba(245,158,11,0.04)}
+.tcard.red{border-color:var(--red-bd);background:rgba(239,68,68,0.04)}
+.tcard .h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tcard .h .tk{font-size:16px;font-weight:700}
+.tcard .h .meta{font-size:11px;color:var(--muted)}
+.tcard .body{font-size:12.5px;color:var(--muted);line-height:1.55;margin-bottom:8px}
+.tcard .body b{color:var(--text)}
+.tcard .verdict{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;padding:5px 10px;border-radius:6px;display:inline-block}
+.tcard.green .verdict{background:rgba(34,197,94,0.14);color:var(--green-text)}
+.tcard.amber .verdict{background:rgba(245,158,11,0.14);color:var(--amber-text)}
+.tcard.red .verdict{background:rgba(239,68,68,0.14);color:var(--red-text)}
+
+/* RV / TRADE */
+.rv{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.rv-card{background:var(--panel2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;border-left:3px solid var(--purple)}
+.rv-card .hd{font-size:14px;font-weight:700;margin-bottom:6px;color:var(--purple-text)}
+.rv-card .desc{font-size:12.5px;color:var(--muted);line-height:1.55;margin-bottom:6px}
+.rv-card .desc b{color:var(--text)}
+.rv-card .trig{font-size:11.5px;color:var(--dim);border-top:1px solid var(--bd);padding-top:6px;margin-top:6px;line-height:1.5}
+.rv-card .trig b{color:var(--text)}
+
+/* NEWS */
+.news{display:flex;flex-direction:column;gap:10px}
+.n-row{padding:10px 14px;background:var(--panel2);border:1px solid var(--bd);border-radius:8px;border-left:3px solid var(--blue)}
+.n-row .ttl{font-size:13.5px;font-weight:600;margin-bottom:4px}
+.n-row .meta{font-size:11px;color:var(--muted);margin-bottom:5px}
+.n-row .why{font-size:12.5px;color:var(--muted);line-height:1.55}
+.n-row .why b{color:var(--text)}
+
+/* SIMPLER CARDS */
+details.simpler{margin-bottom:18px}
+details.simpler>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 20px;border-radius:10px;background:linear-gradient(90deg,rgba(168,85,247,0.18),rgba(168,85,247,0.08));border:1.5px solid var(--purple-bd);font-size:14px;font-weight:600;color:var(--text)}
+details.simpler>summary::-webkit-details-marker{display:none}
+details.simpler>summary:hover{background:linear-gradient(90deg,rgba(168,85,247,0.28),rgba(168,85,247,0.12));border-color:var(--purple)}
+details.simpler>summary .ico{width:28px;height:28px;border-radius:50%;background:var(--purple);color:#0b0e13;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+details.simpler>summary .lbl{display:flex;align-items:center;gap:10px}
+details.simpler>summary .lbl-text .main{color:var(--purple-text);font-size:14px;font-weight:700}
+details.simpler>summary .lbl-text .sub{color:var(--muted);font-size:11.5px;font-weight:400;margin-top:2px;display:block}
+details.simpler>summary .arrow{color:var(--purple-text);font-size:14px;font-weight:700;transition:transform .2s}
+details.simpler[open]>summary .arrow{transform:rotate(180deg)}
+details.simpler>.simpler-body{margin-top:10px;padding:18px 22px;background:rgba(168,85,247,0.06);border:1px solid var(--purple-bd);border-left:3px solid var(--purple);border-radius:10px;font-size:14.5px;line-height:1.75}
+details.simpler>.simpler-body h5{font-size:13px;font-weight:700;color:var(--text);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.5px}
+details.simpler>.simpler-body h5:first-child{margin-top:0}
+details.simpler>.simpler-body p{margin:0 0 12px}
+details.simpler>.simpler-body b{color:var(--purple-text);font-weight:600}
+
+/* SELF AUDIT */
+.audit{background:var(--panel2);border:1px solid var(--bd);border-radius:8px;padding:14px 16px;font-size:12.5px;color:var(--muted);line-height:1.7}
+.audit b{color:var(--text)}
+.audit .row{padding:4px 0;border-bottom:1px dashed var(--bd)}
+.audit .row:last-child{border-bottom:0}
+
+/* FOOTER */
+.footer{margin-top:24px;padding-top:14px;border-top:1px solid var(--bd);font-size:11.5px;color:var(--dim);text-align:center;letter-spacing:.3px}
+</style>
+
+<style>
+/* --- AiPulse template supplemental styles (data-driven panels) --- */
+.note{font-size:13.5px;line-height:1.6;color:var(--muted);margin:12px 2px 2px}
+.muted{color:var(--muted)}
+.gauge-wrap{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.gauge-side{flex:1;min-width:260px}
+table.comp{width:100%;border-collapse:collapse;font-size:13px}
+table.comp th{text-align:left;color:var(--dim);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--bd)}
+table.comp td{padding:6px 8px;border-bottom:1px solid var(--bd);color:var(--text)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.card{background:var(--panel2);border:1px solid var(--bd);border-radius:10px;padding:13px 14px}
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tkr{font-weight:800;font-size:15px;color:var(--text)}
+.px{font-size:20px;font-weight:800;color:var(--text);margin-bottom:8px}
+.kv{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);padding:2px 0}
+.kv b{color:var(--text);font-weight:700}
+.cnote{font-size:12px;color:var(--dim);margin-top:8px;line-height:1.5}
+.pill{font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;border:1px solid var(--bd)}
+.pill.pos,.pos{color:var(--green-text)} .pill.neg,.neg{color:var(--red-text)}
+.pill.pos{background:rgba(34,197,94,.10);border-color:var(--green-bd)}
+.pill.neg{background:rgba(239,68,68,.10);border-color:var(--red-bd)}
+.layers{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.layer{background:var(--panel2);border:1px solid var(--bd);border-radius:10px;padding:12px 13px}
+.layer .lname{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--text);font-size:13.5px}
+.layer .lnote{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5}
+.layer .dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:var(--dim)}
+.layer.green .dot{background:var(--green)} .layer.amber .dot{background:var(--amber)} .layer.red .dot{background:var(--red)}
+.layer.green{border-color:var(--green-bd)} .layer.amber{border-color:var(--amber-bd)} .layer.red{border-color:var(--red-bd)}
+ul.news{list-style:none;padding:0;margin:8px 0 0}
+ul.news li{font-size:13px;color:var(--muted);line-height:1.55;padding:8px 0;border-bottom:1px solid var(--bd)}
+ul.news li b{color:var(--text)}
+.impact{font-size:10.5px;font-weight:800;letter-spacing:.04em;padding:2px 7px;border-radius:5px;text-transform:uppercase;margin-right:6px}
+.impact.high{background:rgba(239,68,68,.12);color:var(--red-text);border:1px solid var(--red-bd)}
+.impact.med{background:rgba(245,158,11,.12);color:var(--amber-text);border:1px solid var(--amber-bd)}
+.impact.low{background:rgba(96,165,250,.12);color:var(--blue-text);border:1px solid var(--blue-bd)}
+.idea{background:var(--panel2);border:1px solid var(--bd);border-left:3px solid var(--purple);border-radius:8px;padding:11px 13px;margin:9px 0}
+.idea .iname{font-weight:700;color:var(--text);font-size:13.5px}
+.idea .inote{font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.55}
+.verdict{font-size:11px;font-weight:800;padding:2px 8px;border-radius:5px;text-transform:uppercase}
+.verdict.hold{background:rgba(96,165,250,.12);color:var(--blue-text);border:1px solid var(--blue-bd)}
+.verdict.add{background:rgba(34,197,94,.12);color:var(--green-text);border:1px solid var(--green-bd)}
+.verdict.trim{background:rgba(245,158,11,.12);color:var(--amber-text);border:1px solid var(--amber-bd)}
+ul.audit{margin:8px 0 0;padding-left:18px}
+ul.audit li{font-size:13px;color:var(--muted);line-height:1.6;margin:5px 0}
+table.grid td.pos{color:var(--green-text)} table.grid td.neg{color:var(--red-text)}
+</style>
+
+</head>
+<body>
+
+<!-- FAB BAR -->
+<div class="fab-bar" id="fabBar">
+  <button class="fab-btn primary" id="btnOpenNewTab">↗ Open in Browser</button>
+  <button class="fab-btn" id="btnPrint">⎙ Print / PDF</button>
+  <button class="fab-btn" id="btnCopy">⧉ Copy HTML</button>
+  <button class="fab-btn" id="btnFullscreen">⛶ Fullscreen</button>
+  <button class="fab-btn close" id="btnHide">✕ Hide</button>
+</div>
+<div class="fab-toast" id="fabToast">✓ HTML copied to clipboard</div>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div>
+      <h1><span class="ico">⬡</span>AiPulse</h1>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px">AI market health barometer — daily</div>
+    </div>
+    <div class="meta">
+      June 23, 2026 · Tuesday · 21:39 TRT<br>
+      <span class="basis">T = based on the June 23, 2026 close</span><br>
+      <span style="color:var(--dim)">Data: FMP (live) · Claude (synthesis)</span>
+    </div>
+  </header>
+
+  <!-- TODAY IN 3 SENTENCES -->
+  <div class="intro">
+    <b>A heavy tape for AI today:</b> a leverage unwind out of Asia hit memory and IP names hard — MU, ARM, MRVL, ASML all down sharply while SPY barely moved.
+    <b>Theses intact:</b> hyperscaler capex is still up strongly YoY and compute demand signals (GPU $/hr) remain firm.
+    <b>Bottom line:</b> the barometer reads Strong but near the lower edge — we read today as deleveraging, not a thesis break.
+    
+  </div>
+
+  <!-- PANEL 01 · AI HEALTH SCORE -->
+  <section class="block" id="p01">
+    <div class="block-head">
+      <div class="ttl"><span class="num">01</span> AI Health Score</div>
+      <div class="when">Jun 23 · Tuesday · 21:39 TRT · first run (no Δ)</div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="gauge">
+        <svg viewBox="0 0 200 130">
+          <path d="M 20 110 A 80 80 0 0 1 180 110" stroke="#262b36" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <path d="M 20 110 A 80 80 0 0 1 140.72 41.14" stroke="#a78bfa" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <text x="100" y="98" text-anchor="middle" style="font-size:34px;font-weight:800;fill:var(--text)">67</text>
+          <text x="100" y="118" text-anchor="middle" style="font-size:12px;fill:var(--muted)">/ 100 · Strong</text>
+        </svg>
+      </div>
+      <div class="gauge-side">
+        <table class="comp">
+          <thead><tr><th>Component</th><th>Wt</th><th>Score</th></tr></thead>
+          <tbody>
+          
+            <tr><td><span class="term" data-t="C1">Price momentum</span></td><td>20%</td><td class="">58</td></tr>
+          
+            <tr><td><span class="term" data-t="C2">Breadth (above 50D)</span></td><td>15%</td><td class="">45</td></tr>
+          
+            <tr><td><span class="term" data-t="C3">Memory / HBM cycle</span></td><td>15%</td><td class="pos">70</td></tr>
+          
+            <tr><td><span class="term" data-t="C4">Hyperscaler capex</span></td><td>20%</td><td class="pos">92</td></tr>
+          
+            <tr><td><span class="term" data-t="C5">Valuation vs growth</span></td><td>10%</td><td class="pos">68</td></tr>
+          
+            <tr><td><span class="term" data-t="C6">Networking / interconnect</span></td><td>10%</td><td class="pos">74</td></tr>
+          
+            <tr><td><span class="term" data-t="C7">Software / application</span></td><td>10%</td><td class="">52</td></tr>
+          
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="note">Long-term demand structure is intact (capex, compute pricing), but breadth is weak today with hyperscalers below their 50D SMA. The soft spot is the software/application layer.</p>
+  </section>
+
+  <!-- PANEL 02 · CORE AI STOCKS -->
+  <section class="block" id="p02">
+    <div class="block-head"><div class="ttl"><span class="num">02</span> Core AI Stocks</div></div>
+    <div class="cards">
+      
+      <div class="card">
+        <div class="card-top"><span class="tkr">NVDA</span><span class="pill neg">−2.1%</span></div>
+        <div class="px">$141.20</div>
+        <div class="kv"><span>1W</span><b class="pos">+3.4%</b></div>
+        <div class="kv"><span>vs 50D SMA</span><b class="pos">above</b></div>
+        <div class="kv"><span>Fwd P/E</span><b>38.5</b></div>
+        <div class="cnote">holds above 50D, leadership intact</div>
+      </div>
+      
+      <div class="card">
+        <div class="card-top"><span class="tkr">AVGO</span><span class="pill neg">−1.4%</span></div>
+        <div class="px">$178.90</div>
+        <div class="kv"><span>1W</span><b class="pos">+1.2%</b></div>
+        <div class="kv"><span>vs 50D SMA</span><b class="pos">above</b></div>
+        <div class="kv"><span>Fwd P/E</span><b>42.1</b></div>
+        
+      </div>
+      
+      <div class="card">
+        <div class="card-top"><span class="tkr">AMD</span><span class="pill neg">−3.2%</span></div>
+        <div class="px">$151.30</div>
+        <div class="kv"><span>1W</span><b class="neg">−1.1%</b></div>
+        <div class="kv"><span>vs 50D SMA</span><b class="neg">below</b></div>
+        <div class="kv"><span>Fwd P/E</span><b>44.0</b></div>
+        
+      </div>
+      
+      <div class="card">
+        <div class="card-top"><span class="tkr">MRVL</span><span class="pill neg">−8.6%</span></div>
+        <div class="px">$74.80</div>
+        <div class="kv"><span>1W</span><b class="neg">−6.2%</b></div>
+        <div class="kv"><span>vs 50D SMA</span><b class="neg">below</b></div>
+        <div class="kv"><span>Fwd P/E</span><b>29.3</b></div>
+        
+      </div>
+      
+      <div class="card">
+        <div class="card-top"><span class="tkr">MU</span><span class="pill neg">−10.8%</span></div>
+        <div class="px">$98.40</div>
+        <div class="kv"><span>1W</span><b class="neg">−7.9%</b></div>
+        <div class="kv"><span>vs 50D SMA</span><b class="neg">below</b></div>
+        <div class="kv"><span>Fwd P/E</span><b>12.4</b></div>
+        <div class="cnote">hardest hit on memory unwind</div>
+      </div>
+      
+      <div class="card">
+        <div class="card-top"><span class="tkr">TSM</span><span class="pill neg">−1.9%</span></div>
+        <div class="px">$182.50</div>
+        <div class="kv"><span>1W</span><b class="pos">+2.1%</b></div>
+        <div class="kv"><span>vs 50D SMA</span><b class="pos">above</b></div>
+        <div class="kv"><span>Fwd P/E</span><b>26.7</b></div>
+        
+      </div>
+      
+      <div class="card">
+        <div class="card-top"><span class="tkr">ARM</span><span class="pill neg">−8.7%</span></div>
+        <div class="px">$138.00</div>
+        <div class="kv"><span>1W</span><b class="neg">−5.5%</b></div>
+        <div class="kv"><span>vs 50D SMA</span><b class="neg">below</b></div>
+        <div class="kv"><span>Fwd P/E</span><b>71.2</b></div>
+        <div class="cnote">high multiple, vol magnet</div>
+      </div>
+      
+      <div class="card">
+        <div class="card-top"><span class="tkr">ASML</span><span class="pill neg">−7.6%</span></div>
+        <div class="px">$905.00</div>
+        <div class="kv"><span>1W</span><b class="neg">−4.1%</b></div>
+        <div class="kv"><span>vs 50D SMA</span><b class="neg">below</b></div>
+        <div class="kv"><span>Fwd P/E</span><b>33.8</b></div>
+        
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- PANEL 03 · INDICES & ETFs -->
+  <section class="block" id="p03">
+    <div class="block-head"><div class="ttl"><span class="num">03</span> AI Infrastructure Indices</div></div>
+    <table class="grid">
+      <thead><tr><th>Index / ETF</th><th>1D</th><th>1W</th><th>Note</th></tr></thead>
+      <tbody>
+      
+        <tr><td><b>SMH (Semis)</b></td><td class="neg">−6.2%</td><td class="neg">−4.8%</td><td class="muted">epicenter of the drop</td></tr>
+      
+        <tr><td><b>SOXX (Semis)</b></td><td class="neg">−5.9%</td><td class="neg">−4.4%</td><td class="muted"></td></tr>
+      
+        <tr><td><b>QQQ (Nasdaq-100)</b></td><td class="neg">−1.6%</td><td class="neg">−0.9%</td><td class="muted"></td></tr>
+      
+        <tr><td><b>SPY (S&P 500)</b></td><td class="neg">−0.9%</td><td class="pos">+0.2%</td><td class="muted">out-of-band divergence vs semis</td></tr>
+      
+        <tr><td><b>IGV (Software)</b></td><td class="neg">−1.2%</td><td class="neg">−1.8%</td><td class="muted"></td></tr>
+      
+      </tbody>
+    </table>
+  </section>
+
+  <!-- PANEL 04 · VALUE-CHAIN LAYERS -->
+  <section class="block" id="p04">
+    <div class="block-head"><div class="ttl"><span class="num">04</span> Value-Chain Layer Analysis</div></div>
+    <div class="layers">
+      
+      <div class="layer green"><div class="lname"><span class="dot"></span>Foundry / Manufacturing</div><div class="lnote">TSM resilient</div></div>
+      
+      <div class="layer amber"><div class="lname"><span class="dot"></span>GPU / Accelerators</div><div class="lnote">NVDA ok, AMD soft</div></div>
+      
+      <div class="layer red"><div class="lname"><span class="dot"></span>Memory / HBM</div><div class="lnote">MU −10.8%</div></div>
+      
+      <div class="layer green"><div class="lname"><span class="dot"></span>Networking / Interconnect</div><div class="lnote">AVGO/MRVL/ANET mixed-firm</div></div>
+      
+      <div class="layer red"><div class="lname"><span class="dot"></span>IP / Design</div><div class="lnote">ARM −8.7%</div></div>
+      
+      <div class="layer amber"><div class="lname"><span class="dot"></span>Hyperscalers / Cloud</div><div class="lnote">all below 50D</div></div>
+      
+      <div class="layer red"><div class="lname"><span class="dot"></span>Software / Application</div><div class="lnote">app layer weak</div></div>
+      
+    </div>
+  </section>
+
+  <!-- PANEL 05 · INSTITUTIONAL POSITIONING -->
+  <section class="block" id="p05">
+    <div class="block-head"><div class="ttl"><span class="num">05</span> Institutional Positioning</div></div>
+    <p class="note">Flows suggest fast-money deleveraging in high-beta semis rather than long-term reallocation; quality large-caps saw smaller drawdowns.</p>
+  </section>
+
+  <!-- PANEL 06 · CRITICAL NEWS -->
+  <section class="block" id="p06">
+    <div class="block-head"><div class="ttl"><span class="num">06</span> Critical News</div></div>
+    <ul class="news">
+      
+      <li><span class="impact high">HIGH</span> <b>Memory unwind from Asia</b> — triggered the semis selloff</li>
+      
+      <li><span class="impact med">MED</span> <b>GPU $/hr firmer</b> — supports demand thesis</li>
+      
+    </ul>
+  </section>
+
+  <!-- PANEL 07 · EARNINGS CONVERSION -->
+  <section class="block" id="p07">
+    <div class="block-head"><div class="ttl"><span class="num">07</span> Earnings Conversion</div></div>
+    <p class="note">Hyperscaler capex YoY: <b class="pos">64.6%</b>. Capex momentum across the four hyperscalers remains the strongest structural support for the AI compute chain.</p>
+    
+  </section>
+
+  <!-- PANEL 08 · THESIS CHECK (PORTFOLIO) -->
+  <section class="block" id="p08">
+    <div class="block-head"><div class="ttl"><span class="num">08</span> Thesis Check — Portfolio</div></div>
+    <p class="note">Portfolio is concentrated in the parts of the chain that fell hardest today, but the multi-quarter demand thesis is unbroken. No verdict changes purely on a one-day leverage move.</p>
+    <table class="grid">
+      <thead><tr><th>Ticker</th><th>Lots</th><th>Cost</th><th>Last</th><th>P/L</th><th>Verdict</th><th>Note</th></tr></thead>
+      <tbody>
+      
+        <tr>
+          <td><b>NVDA</b></td><td>100</td><td>$120.00</td><td>$141.20</td>
+          <td class="pos">+17.7%</td>
+          <td><span class="verdict hold">Hold</span></td>
+          <td class="muted">leadership intact, above 50D</td>
+        </tr>
+      
+        <tr>
+          <td><b>AVGO</b></td><td>40</td><td>$165.00</td><td>$178.90</td>
+          <td class="pos">+8.4%</td>
+          <td><span class="verdict hold">Hold</span></td>
+          <td class="muted">interconnect steady</td>
+        </tr>
+      
+        <tr>
+          <td><b>AMD</b></td><td>80</td><td>$140.00</td><td>$151.30</td>
+          <td class="pos">+8.1%</td>
+          <td><span class="verdict hold">Hold</span></td>
+          <td class="muted">below 50D, watch</td>
+        </tr>
+      
+        <tr>
+          <td><b>MRVL</b></td><td>150</td><td>$70.00</td><td>$74.80</td>
+          <td class="pos">+6.9%</td>
+          <td><span class="verdict add">Add</span></td>
+          <td class="muted">oversold vs thesis</td>
+        </tr>
+      
+        <tr>
+          <td><b>MU</b></td><td>90</td><td>$95.00</td><td>$98.40</td>
+          <td class="pos">+3.6%</td>
+          <td><span class="verdict add">Add</span></td>
+          <td class="muted">cycle intact, panic dip</td>
+        </tr>
+      
+        <tr>
+          <td><b>TSM</b></td><td>60</td><td>$175.00</td><td>$182.50</td>
+          <td class="pos">+4.3%</td>
+          <td><span class="verdict hold">Hold</span></td>
+          <td class="muted">resilient anchor</td>
+        </tr>
+      
+        <tr>
+          <td><b>ARM</b></td><td>50</td><td>$130.00</td><td>$138.00</td>
+          <td class="pos">+6.2%</td>
+          <td><span class="verdict trim">Trim</span></td>
+          <td class="muted">valuation/vol risk</td>
+        </tr>
+      
+        <tr>
+          <td><b>ASML</b></td><td>15</td><td>$900.00</td><td>$905.00</td>
+          <td class="pos">+0.6%</td>
+          <td><span class="verdict hold">Hold</span></td>
+          <td class="muted">long-cycle monopoly</td>
+        </tr>
+      
+        <tr>
+          <td><b>TSLA</b></td><td>70</td><td>$240.00</td><td>$248.00</td>
+          <td class="pos">+3.3%</td>
+          <td><span class="verdict hold">Hold</span></td>
+          <td class="muted">non-AI beta</td>
+        </tr>
+      
+        <tr>
+          <td><b>RKLB</b></td><td>300</td><td>$12.00</td><td>$14.70</td>
+          <td class="pos">+22.5%</td>
+          <td><span class="verdict hold">Hold</span></td>
+          <td class="muted">momentum name</td>
+        </tr>
+      
+      </tbody>
+    </table>
+  </section>
+
+  <!-- PANEL 09 · TRADE IDEAS -->
+  <section class="block" id="p09">
+    <div class="block-head"><div class="ttl"><span class="num">09</span> Compute RV & Trade Ideas</div></div>
+    
+    <div class="idea"><div class="iname">MU / ARM relative value</div><div class="inote">Memory cycle vs rich IP multiple — favor MU over ARM on a 1-3 month horizon if the unwind stabilizes.</div></div>
+    
+    <div class="idea"><div class="iname">Hedge the app layer</div><div class="inote">Software/application names below 50D; a light index hedge (IGV puts) covers the weakest layer.</div></div>
+    
+  </section>
+
+  <!-- PANEL 10 · SELF-AUDIT -->
+  <section class="block" id="p10">
+    <div class="block-head"><div class="ttl"><span class="num">10</span> Self-Audit</div></div>
+    <ul class="audit">
+      <li>Health score is weighted from 7 components; weights are fixed and may not suit every regime.</li><li>One-day moves dominate momentum/breadth inputs — interpret near band edges cautiously.</li><li>Capex YoY is annual-statement based and lags intra-year shifts.</li>
+    </ul>
+  </section>
+
+  <footer class="foot">AiPulse · generated 2026-06-23 21:39 TRT · for personal use · not investment advice</footer>
+</div>
+
+<script>
+(function(){
+  var fab=document.getElementById('fabBar'), toast=document.getElementById('fabToast');
+  function showToast(msg){toast.textContent=msg||'✓ HTML copied to clipboard';toast.classList.add('show');setTimeout(function(){toast.classList.remove('show')},2200)}
+  document.getElementById('btnOpenNewTab').addEventListener('click',function(){
+    var html='<!DOCTYPE html>'+document.documentElement.outerHTML;
+    var blob=new Blob([html],{type:'text/html;charset=utf-8'}); var url=URL.createObjectURL(blob);
+    var win=window.open(url,'_blank');
+    if(!win){ window.location.href='data:text/html;charset=utf-8,'+encodeURIComponent(html); }
+  });
+  document.getElementById('btnPrint').addEventListener('click',function(){window.print()});
+  document.getElementById('btnCopy').addEventListener('click',function(){
+    var html='<!DOCTYPE html>'+document.documentElement.outerHTML;
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(html).then(function(){showToast()}).catch(function(){fallback(html)});
+    } else { fallback(html) }
+    function fallback(t){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast()}catch(e){}document.body.removeChild(ta)}
+  });
+  document.getElementById('btnFullscreen').addEventListener('click',function(){
+    if(document.fullscreenElement){document.exitFullscreen()} else {document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}
+  });
+  document.getElementById('btnHide').addEventListener('click',function(){
+    fab.classList.add('hidden'); document.body.style.paddingTop='0';
+  });
+})();
+</script>
+<script>
+var SOZLUK=[{"k": "HBM", "t": "HBM (High-Bandwidth Memory)", "d": "Stacked memory used next to AI accelerators for very high data throughput."}, {"k": "50D", "t": "50-Day SMA", "d": "Average closing price over the last 50 trading days — a common trend gauge."}, {"k": "capex", "t": "Capex", "d": "Capital expenditure — money companies spend on long-lived assets like data centers."}, {"k": "RV", "t": "Relative Value (RV)", "d": "A trade comparing two related assets rather than betting on market direction."}];
+(function(){
+  if(!document.body) return;
+  var slug=function(s){return s.replace(/[^a-zA-Z0-9]/g,'')};
+  var defByT={}; SOZLUK.forEach(function(o){defByT[o.t]=o.d;});
+  var keys=SOZLUK.slice().sort(function(a,b){return b.k.length-a.k.length;});
+  var skip={A:1,SCRIPT:1,STYLE:1,TH:1,BUTTON:1,INPUT:1,TEXTAREA:1,SELECT:1,OPTION:1,CODE:1};
+  function shortKey(k){return /^[A-Za-z\/]{1,3}$/.test(k);}
+  function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+  function findIdx(text,k){
+    if(!shortKey(k)) return text.indexOf(k);
+    var re=new RegExp('(^|[^A-Za-z0-9])'+esc(k)+'(?=[^A-Za-z0-9]|$)');
+    var m=re.exec(text); return m?m.index+m[1].length:-1;
+  }
+  var done={}, found=[];
+  keys.forEach(function(o){
+    if(done[o.t]) return;
+    var tw=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+      var p=n.parentNode;
+      while(p&&p!==document.body){
+        if(p.nodeName&&skip[p.nodeName]) return NodeFilter.FILTER_REJECT;
+        if(p.classList&&(p.classList.contains('term')||p.classList.contains('glossary-term'))) return NodeFilter.FILTER_REJECT;
+        if(p.id==='balloon'||p.id==='sozluk-grid') return NodeFilter.FILTER_REJECT;
+        p=p.parentNode;
+      }
+      return findIdx(n.nodeValue,o.k)>-1?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP;
+    }});
+    var node=tw.nextNode(); if(!node) return;
+    var idx=findIdx(node.nodeValue,o.k); if(idx<0) return;
+    var after=node.splitText(idx);
+    after.nodeValue=after.nodeValue.substring(o.k.length);
+    var span=document.createElement('span');
+    span.className='term'; span.textContent=o.k;
+    span.setAttribute('data-t',o.t); span.setAttribute('data-d',defByT[o.t]);
+    node.parentNode.insertBefore(span,after);
+    done[o.t]=1; found.push(o.t);
+  });
+  if(!found.length) return;
+  // SADECE SATIR ICI: alt grid bolumu OLUSTURULMAZ. Rapor kendi #sozluk-grid'ini
+  // saglarsa yalniz onu doldururuz; yoksa hicbir bolum eklenmez.
+  var grid=document.getElementById('sozluk-grid');
+  if(grid){
+    var seenG={};
+    found.map(function(t){return {t:t,d:defByT[t]};})
+      .sort(function(a,b){return a.t.localeCompare(b.t,'tr');})
+      .forEach(function(o){ if(seenG[o.t]) return; seenG[o.t]=1;
+        var d=document.createElement('div'); d.className='glossary-term'; d.id='g-'+slug(o.t);
+        d.innerHTML='<b>'+o.t+':</b> '+o.d; grid.appendChild(d);
+      });
+  }
+  var balloon=document.getElementById('balloon');
+  if(!balloon){ balloon=document.createElement('div'); balloon.id='balloon'; document.body.appendChild(balloon); }
+  var cur='';
+  function place(el){
+    var r=el.getBoundingClientRect(); balloon.style.display='block';
+    var w=Math.min(260,window.innerWidth-16); balloon.style.width=w+'px';
+    var left=Math.min(r.left,window.innerWidth-w-8); left=Math.max(8,left); balloon.style.left=left+'px';
+    var top=r.bottom+6; if(top+balloon.offsetHeight>window.innerHeight) top=r.top-balloon.offsetHeight-6;
+    balloon.style.top=Math.max(8,top)+'px';
+  }
+  function show(el){
+    balloon.innerHTML='<b style="color:#5aa2ff">'+el.getAttribute('data-t')+'</b><br>'+el.getAttribute('data-d');
+    place(el);
+    document.querySelectorAll('.glossary-term').forEach(function(g){g.classList.remove('hl')});
+    var gi=document.getElementById('g-'+slug(el.getAttribute('data-t'))); if(gi) gi.classList.add('hl');
+  }
+  function hide(){ balloon.style.display='none'; cur=''; }
+  document.querySelectorAll('.term').forEach(function(el){
+    el.addEventListener('mouseenter',function(){show(el);});
+    el.addEventListener('mouseleave',function(){if(cur!==el.getAttribute('data-t'))hide();});
+    el.addEventListener('click',function(e){e.stopPropagation();
+      var t=el.getAttribute('data-t'); if(cur===t){hide();} else {show(el);cur=t;}
+    });
+  });
+  document.addEventListener('click',hide);
+  window.addEventListener('scroll',function(){if(balloon.style.display==='block'&&cur){var a=document.querySelector('.term[data-t="'+cur+'"]');if(a)place(a);}});
+})();
+</script>
+<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;var id=a.getAttribute("href").slice(1);if(!id)return;var t=document.getElementById(id);if(t){e.preventDefault();t.scrollIntoView({behavior:"smooth",block:"start"});}});})();</script>
+<script>(function(){try{
+var KT=new Set(["AMD", "ARM", "ASML", "AVGO", "IGV", "MRVL", "MU", "NVDA", "QQQ", "RKLB", "SMH", "SOXX", "SPY", "TSLA", "TSM"]);var STOP=new Set(["AI"]);
+function ok(t){return t.length>=2&&KT.has(t)&&!STOP.has(t);}
+var skip={A:1,SCRIPT:1,STYLE:1,BUTTON:1,INPUT:1,TEXTAREA:1,SELECT:1,OPTION:1,CODE:1};
+if(!document.body)return;
+var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null),nodes=[],n;
+while(n=w.nextNode()){var p=n.parentNode,bad=false;while(p&&p!==document.body){if(skip[p.nodeName]){bad=true;break;}p=p.parentNode;}if(!bad&&/[A-Z]{2,6}/.test(n.nodeValue))nodes.push(n);}
+nodes.forEach(function(node){var t=node.nodeValue,re=/\b[A-Z]{2,6}\b/g,last=0,m,frag=document.createDocumentFragment(),any=false;
+while(m=re.exec(t)){var tk=m[0];if(!ok(tk))continue;any=true;if(m.index>last)frag.appendChild(document.createTextNode(t.slice(last,m.index)));
+var a=document.createElement('a');a.href='https://stockanalysis.com/stocks/'+tk+'/';a.target='_blank';a.rel='noopener noreferrer';a.textContent=tk;a.title=tk+' — stockanalysis.com';a.style.color='inherit';a.style.textDecoration='underline';a.style.textDecorationStyle='dotted';a.style.textUnderlineOffset='2px';
+frag.appendChild(a);last=m.index+tk.length;}
+if(any){if(last<t.length)frag.appendChild(document.createTextNode(t.slice(last)));node.parentNode.replaceChild(frag,node);}});
+}catch(e){}})();</script>
+</body>
+</html>

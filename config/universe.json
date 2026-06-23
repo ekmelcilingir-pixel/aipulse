@@ -1,0 +1,21 @@
+{
+  "_comment": "What the report tracks. Edit freely. 'stocks' = Panel 02 cards. 'indices' = Panel 03. 'value_chain' maps layers to representative tickers used to gauge each layer's health.",
+  "stocks": ["NVDA", "AVGO", "AMD", "MRVL", "MU", "TSM", "ARM", "ASML"],
+  "indices": [
+    { "ticker": "SMH",  "name": "SMH (Semis)" },
+    { "ticker": "SOXX", "name": "SOXX (Semis)" },
+    { "ticker": "QQQ",  "name": "QQQ (Nasdaq-100)" },
+    { "ticker": "SPY",  "name": "SPY (S&P 500)" },
+    { "ticker": "IGV",  "name": "IGV (Software)" }
+  ],
+  "value_chain": [
+    { "layer": "Foundry / Manufacturing", "tickers": ["TSM", "ASML"] },
+    { "layer": "GPU / Accelerators",       "tickers": ["NVDA", "AMD"] },
+    { "layer": "Memory / HBM",             "tickers": ["MU"] },
+    { "layer": "Networking / Interconnect","tickers": ["AVGO", "MRVL", "ANET"] },
+    { "layer": "IP / Design",              "tickers": ["ARM"] },
+    { "layer": "Hyperscalers / Cloud",     "tickers": ["MSFT", "GOOGL", "AMZN", "META"] },
+    { "layer": "Software / Application",   "tickers": ["CRM", "NOW", "PLTR"] }
+  ],
+  "hyperscalers": ["MSFT", "GOOGL", "AMZN", "META"]
+}

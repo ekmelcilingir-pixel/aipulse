@@ -1,0 +1,213 @@
+{
+  "intro": [
+    {
+      "lead": "A heavy tape for AI today:",
+      "text": "a leverage unwind out of Asia hit memory and IP names hard \u2014 MU, ARM, MRVL, ASML all down sharply while SPY barely moved."
+    },
+    {
+      "lead": "Theses intact:",
+      "text": "hyperscaler capex is still up strongly YoY and compute demand signals (GPU $/hr) remain firm."
+    },
+    {
+      "lead": "Bottom line:",
+      "text": "the barometer reads Strong but near the lower edge \u2014 we read today as deleveraging, not a thesis break."
+    }
+  ],
+  "health": {
+    "label": "Strong",
+    "commentary": "Long-term demand structure is intact (capex, compute pricing), but breadth is weak today with hyperscalers below their 50D SMA. The soft spot is the software/application layer.",
+    "components": [
+      {
+        "id": "C1",
+        "name": "Price momentum",
+        "weight": 0.2,
+        "score": 58,
+        "note": "sharp 1D drop, 1W mixed"
+      },
+      {
+        "id": "C2",
+        "name": "Breadth (above 50D)",
+        "weight": 0.15,
+        "score": 45,
+        "note": "many names below 50D"
+      },
+      {
+        "id": "C3",
+        "name": "Memory / HBM cycle",
+        "weight": 0.15,
+        "score": 70,
+        "note": "cycle up despite today"
+      },
+      {
+        "id": "C4",
+        "name": "Hyperscaler capex",
+        "weight": 0.2,
+        "score": 92,
+        "note": "+64.6% YoY"
+      },
+      {
+        "id": "C5",
+        "name": "Valuation vs growth",
+        "weight": 0.1,
+        "score": 68,
+        "note": "rich but growth-backed"
+      },
+      {
+        "id": "C6",
+        "name": "Networking / interconnect",
+        "weight": 0.1,
+        "score": 74,
+        "note": "AVGO/ANET steady"
+      },
+      {
+        "id": "C7",
+        "name": "Software / application",
+        "weight": 0.1,
+        "score": 52,
+        "note": "app layer red"
+      }
+    ]
+  },
+  "stock_notes": {
+    "NVDA": "holds above 50D, leadership intact",
+    "MU": "hardest hit on memory unwind",
+    "ARM": "high multiple, vol magnet"
+  },
+  "indices_notes": {
+    "SMH": "epicenter of the drop",
+    "SPY": "out-of-band divergence vs semis"
+  },
+  "value_chain": [
+    {
+      "layer": "Foundry / Manufacturing",
+      "health": "green",
+      "note": "TSM resilient"
+    },
+    {
+      "layer": "GPU / Accelerators",
+      "health": "amber",
+      "note": "NVDA ok, AMD soft"
+    },
+    {
+      "layer": "Memory / HBM",
+      "health": "red",
+      "note": "MU \u221210.8%"
+    },
+    {
+      "layer": "Networking / Interconnect",
+      "health": "green",
+      "note": "AVGO/MRVL/ANET mixed-firm"
+    },
+    {
+      "layer": "IP / Design",
+      "health": "red",
+      "note": "ARM \u22128.7%"
+    },
+    {
+      "layer": "Hyperscalers / Cloud",
+      "health": "amber",
+      "note": "all below 50D"
+    },
+    {
+      "layer": "Software / Application",
+      "health": "red",
+      "note": "app layer weak"
+    }
+  ],
+  "positioning": "Flows suggest fast-money deleveraging in high-beta semis rather than long-term reallocation; quality large-caps saw smaller drawdowns.",
+  "news": [
+    {
+      "headline": "Memory unwind from Asia",
+      "impact": "high",
+      "note": "triggered the semis selloff"
+    },
+    {
+      "headline": "GPU $/hr firmer",
+      "impact": "med",
+      "note": "supports demand thesis"
+    }
+  ],
+  "earnings_note": "Capex momentum across the four hyperscalers remains the strongest structural support for the AI compute chain.",
+  "thesis": {
+    "overall": "Portfolio is concentrated in the parts of the chain that fell hardest today, but the multi-quarter demand thesis is unbroken. No verdict changes purely on a one-day leverage move.",
+    "verdicts": {
+      "NVDA": {
+        "verdict": "hold",
+        "note": "leadership intact, above 50D"
+      },
+      "AVGO": {
+        "verdict": "hold",
+        "note": "interconnect steady"
+      },
+      "AMD": {
+        "verdict": "hold",
+        "note": "below 50D, watch"
+      },
+      "MRVL": {
+        "verdict": "add",
+        "note": "oversold vs thesis"
+      },
+      "MU": {
+        "verdict": "add",
+        "note": "cycle intact, panic dip"
+      },
+      "TSM": {
+        "verdict": "hold",
+        "note": "resilient anchor"
+      },
+      "ARM": {
+        "verdict": "trim",
+        "note": "valuation/vol risk"
+      },
+      "ASML": {
+        "verdict": "hold",
+        "note": "long-cycle monopoly"
+      },
+      "TSLA": {
+        "verdict": "hold",
+        "note": "non-AI beta"
+      },
+      "RKLB": {
+        "verdict": "hold",
+        "note": "momentum name"
+      }
+    }
+  },
+  "trade_ideas": [
+    {
+      "title": "MU / ARM relative value",
+      "rationale": "Memory cycle vs rich IP multiple \u2014 favor MU over ARM on a 1-3 month horizon if the unwind stabilizes."
+    },
+    {
+      "title": "Hedge the app layer",
+      "rationale": "Software/application names below 50D; a light index hedge (IGV puts) covers the weakest layer."
+    }
+  ],
+  "self_audit": [
+    "Health score is weighted from 7 components; weights are fixed and may not suit every regime.",
+    "One-day moves dominate momentum/breadth inputs \u2014 interpret near band edges cautiously.",
+    "Capex YoY is annual-statement based and lags intra-year shifts."
+  ],
+  "glossary": [
+    {
+      "k": "HBM",
+      "t": "HBM (High-Bandwidth Memory)",
+      "d": "Stacked memory used next to AI accelerators for very high data throughput."
+    },
+    {
+      "k": "50D",
+      "t": "50-Day SMA",
+      "d": "Average closing price over the last 50 trading days \u2014 a common trend gauge."
+    },
+    {
+      "k": "capex",
+      "t": "Capex",
+      "d": "Capital expenditure \u2014 money companies spend on long-lived assets like data centers."
+    },
+    {
+      "k": "RV",
+      "t": "Relative Value (RV)",
+      "d": "A trade comparing two related assets rather than betting on market direction."
+    }
+  ]
+}
